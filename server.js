@@ -67,6 +67,64 @@ app.get("/api/visitors", function (request, response) {
 });
 
 
+/**
+ * Endpoint to get all player stats in the NHL
+ * REST API example:
+ * <code>
+ * GET http://localhost:3000/api/visitors
+ * </code>
+ *
+ * Response:
+ * [ "Bob", "Jane" ]
+ * @return An array of all the visitor names
+ */
+app.get("/api/player_stats", function (request, response) {
+  var names = [];
+  if(!mydb) {
+    response.json(names);
+    return;
+  }
+
+
+			//======================call to get all NHL Teams===========================
+			var options = {
+        host: "statsapi.web.nhl.com",
+        path: "/api/v1/teams",
+        method: "GET",
+        headers: {
+        }
+      }
+      var reqTeams = https.request(options, function (resTeams) {
+        var responseStringTeams = ""
+  
+        resTeams.on("teams", function (data) {
+          responseStringTeams += data   // save all the data from response
+        });
+        resTeams.on("end", function () {
+          console.log(responseStringTeams)
+          var parsed = JSON.parse(responseStringTeams)
+        });
+      });
+      for(var i = 0; i < parsed.teams.length; i++) {
+        // insert the team as a document
+        mydb.insert(parsed.teams[i], function(err) {
+          if (err) {
+            console.log('[mydb.insert] ', err.message);
+            response.send("Error");
+            return;
+          }
+        });
+      }
+      
+      reqTeams.end();
+      //============================================================================
+  
+  
+     
+  response.json(names);
+});
+
+
 // load local VCAP configuration  and service credentials
 var vcapLocal;
 try {
