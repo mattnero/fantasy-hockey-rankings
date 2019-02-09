@@ -1,9 +1,4 @@
 applications:
-- path: .
-  memory: 128M
-  instances: 1
-  domain: mybluemix.net
-  name: fantasy-hockey-rankings
-  host: fantasy-hockey-rankings
+- name: fantasy-hockey-rankings
   random-route: false
-  disk_quota: 1024M
+  memory: 128M
