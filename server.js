@@ -123,7 +123,7 @@ app.get("/api/player_stats", function (request, response) {
 
   console.log("gets into the call");
       //======================call to get all NHL Teams===========================
-      
+      /*
 			var options = {
         host: "statsapi.web.nhl.com",
         path: "/api/v1/teams",
@@ -142,6 +142,25 @@ app.get("/api/player_stats", function (request, response) {
          // var parsed = JSON.parse(responseStringTeams)
         });
       });
+*/
+
+      https.get('https://statsapi.web.nhl.com/api/v1/teams', (resp) => {
+      let data = '';
+
+        // A chunk of data has been recieved.
+        resp.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        // The whole response has been received. Print out the result.
+        resp.on('end', () => {
+          console.log(JSON.parse(data).explanation);
+        });
+
+      }).on("error", (err) => {
+        console.log("Error: " + err.message);
+      });
+
       /*
       for(var i = 0; i < parsed.teams.length; i++) {
         // insert the team as a document
@@ -154,7 +173,6 @@ app.get("/api/player_stats", function (request, response) {
         });
       }
       */
-      reqTeams.end();
       
       //============================================================================
   
