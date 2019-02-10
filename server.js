@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 var cfenv = require("cfenv");
 var bodyParser = require('body-parser')
+var https = require("https")
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -133,12 +134,12 @@ app.get("/api/player_stats", function (request, response) {
       var reqTeams = https.request(options, function (resTeams) {
         var responseStringTeams = ""
   
-        resTeams.on("teams", function (data) {
+        resTeams.on("data", function (data) {
           responseStringTeams += data   // save all the data from response
         });
         resTeams.on("end", function () {
           console.log(responseStringTeams)
-          var parsed = JSON.parse(responseStringTeams)
+         // var parsed = JSON.parse(responseStringTeams)
         });
       });
       /*
