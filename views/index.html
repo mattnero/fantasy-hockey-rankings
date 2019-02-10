@@ -118,8 +118,10 @@
 
           //Retrieve all the visitors from the database
         function getTeams(){
+            console.log("makes the call");
           $.get("./api/player_stats")
               .done(function(data) {
+                  console.log("here");
                   if(data.length > 0) {
                     data.forEach(function(element, index) {
                       data[index] = AntiXSS.sanitizeInput(element)

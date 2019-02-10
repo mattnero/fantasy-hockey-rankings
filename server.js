@@ -85,7 +85,7 @@ app.get("/api/player_stats", function (request, response) {
     return;
   }
 
-
+  console.log("gets into the call");
 			//======================call to get all NHL Teams===========================
 			var options = {
         host: "statsapi.web.nhl.com",
