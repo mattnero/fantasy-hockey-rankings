@@ -121,7 +121,8 @@ app.get("/api/player_stats", function (request, response) {
   }
 
   console.log("gets into the call");
-			//======================call to get all NHL Teams===========================
+      //======================call to get all NHL Teams===========================
+      /*
 			var options = {
         host: "statsapi.web.nhl.com",
         path: "/api/v1/teams",
@@ -152,6 +153,7 @@ app.get("/api/player_stats", function (request, response) {
       }
       
       reqTeams.end();
+      */
       //============================================================================
   
   
