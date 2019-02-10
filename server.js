@@ -25,6 +25,41 @@ app.post("/api/visitors", function (request, response) {
     response.send(doc);
     return;
   }
+
+			//======================call to get all NHL Teams===========================
+			var options = {
+        host: "statsapi.web.nhl.com",
+        path: "/api/v1/teams",
+        method: "GET",
+        headers: {
+        }
+      }
+      var reqTeams = https.request(options, function (resTeams) {
+        var responseStringTeams = ""
+  
+        resTeams.on("teams", function (data) {
+          responseStringTeams += data   // save all the data from response
+        });
+        resTeams.on("end", function () {
+          console.log(responseStringTeams)
+          var parsed = JSON.parse(responseStringTeams)
+        });
+      });
+      for(var i = 0; i < parsed.teams.length; i++) {
+        // insert the team as a document
+        mydb.insert(parsed.teams[i], function(err) {
+          if (err) {
+            console.log('[mydb.insert] ', err.message);
+            response.send("Error");
+            return;
+          }
+        });
+      }
+      
+      reqTeams.end();
+      //============================================================================
+
+
   // insert the username as a document
   mydb.insert(doc, function(err, body, header) {
     if (err) {
