@@ -53,7 +53,7 @@
 <body>
     <div class="container" id="container">
         <h1 data-i18n="welcome"></h1> <!-- Welcome -->
-        <button type="button">Load Team Data</button>
+        <button onclick="getTeams()" type="button">Load Team Data</button>
         <div id="nameInput" class="input-group-lg center-block helloInput">
             <p class="lead" data-i18n="what_is_your_name"></p>
             <input id="user_name" type="text" class="form-control" aria-describedby="sizing-addon1" value="" />
@@ -105,6 +105,20 @@
         //Retrieve all the visitors from the database
         function getNames(){
           $.get("./api/visitors")
+              .done(function(data) {
+                  if(data.length > 0) {
+                    data.forEach(function(element, index) {
+                      data[index] = AntiXSS.sanitizeInput(element)
+                    });
+                    $('#databaseNames').html($.i18n('database_contents') + JSON.stringify(data));
+                  }
+              });
+          }
+
+
+          //Retrieve all the visitors from the database
+        function getTeams(){
+          $.get("./api/player_stats")
               .done(function(data) {
                   if(data.length > 0) {
                     data.forEach(function(element, index) {
